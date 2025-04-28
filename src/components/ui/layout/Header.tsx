@@ -1,5 +1,4 @@
 import React, { type PropsWithChildren, type ReactElement } from 'react';
-import { useNavigation } from '@react-navigation/native';
 import { BoxProps, TextProps, type LayoutProps } from '@shopify/restyle';
 
 import { useSafeAreaInsetsStyle } from '@/hooks/useSafeAreaInsetsStyle';
@@ -29,9 +28,8 @@ export const Header = ({ children, bg = 'background', ...rest }: PropsWithChildr
 };
 
 const BackAction = ({ onPress, color = 'black', ...rest }: { onPress?: () => void } & Omit<IconProps, 'icon'>): ReactElement => {
-    const navigation = useNavigation();
     const navigateBack = (): void => {
-        navigation.goBack();
+       //do your goback setup
     };
 
     return (
