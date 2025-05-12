@@ -6274,10 +6274,10 @@ react-native-reanimated@^3.16.1:
     convert-source-map "^2.0.0"
     invariant "^2.2.4"
 
-react-native-rename@^3.2.14:
-  version "3.2.14"
-  resolved "https://registry.yarnpkg.com/react-native-rename/-/react-native-rename-3.2.14.tgz#9c368ee1bc8e3d6b93d64c669a4a2fed76894cb2"
-  integrity sha512-mukwvCtWT1l/1La+E5H5R8s/XLlHOC+v1F/tKCzCU/Q1hfPMrfVH/qGev9mLD61y3Z4qEQwbXeMOUcGWqUiDfg==
+react-native-rename@^3.2.16:
+  version "3.2.16"
+  resolved "https://registry.yarnpkg.com/react-native-rename/-/react-native-rename-3.2.16.tgz#6ba122481d12779a80ddbe7a137762bda4e42577"
+  integrity sha512-HxetgbYbhTv1hLQuZH6gKRO9SX9hbP/mp1k9+VhxmxHGEPNdYDtpNiQyUVfrsmB2e9BJd0z1pzDtFp0Y7kCKYA==
   dependencies:
     chalk "^5.3.0"
     cheerio "^1.0.0-rc.12"
