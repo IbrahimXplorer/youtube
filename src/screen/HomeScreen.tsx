@@ -6,7 +6,7 @@ const HomeScreen = () => {
     useHeader(()=><Header >
         <Header.BackAction />
         <Header.Content title="hellow" subTitle="John Doe"/>
-        <Header.Action variant="svg" icon="notification" />
+        <Header.Action variant="vector" icon="bell" />
     </Header>);
   return (
     <Screen preset="auto" safeAreaEdges={['top']}>
