@@ -1,65 +1,109 @@
-# rnboilerplate | Code faster with prebuild boilerplate
 
-Project name is a `rnboilerplate` which `provides boilerplate code to kickstart your rn projct with restyle theme`.
+# ✨ Shadow-UI => React Native UI Library
 
-## Prerequisites
+A sleek, customizable, and production-ready **React Native UI Component Library** designed to accelerate app development with beautifully crafted components out of the box. Built with **[Shopify Restyle](https://github.com/Shopify/restyle)** for a flexible and consistent design system, this library helps you build modern, accessible, and themeable interfaces with ease. Inspired by the simplicity of React Native Paper, it empowers you to create consistent, visually appealing UIs across Android and iOS platforms.
 
-Before you begin, ensure you have met the following requirements:
-<!--- These are just example requirements. Add, duplicate or remove as required --->
-* You have installed the latest version of `nodejs`
-* You have a `<Windows/Linux/Mac>` machine.
-* >**Note**: Make sure you have completed the [React Native - Environment Setup](https://reactnative.dev/docs/environment-setup) instructions till "Creating a new application" step, before proceeding.
+---
 
-## Getting Started
+## 📦 Prerequisites
 
-#### Step 1: Start the Metro Server
+Before getting started, make sure your development environment meets the following requirements:
 
-First, you will need to start **Metro**, the JavaScript _bundler_ that ships _with_ React Native.
+- ✅ Latest version of **[Node.js](https://nodejs.org)**
+- 💻 A machine running **Windows**, **macOS**, or **Linux**
+- ⚙️ React Native CLI properly installed and configured
 
-To start Metro, run the following command from the _root_ of your my-care-mobile project dir:
+> **Note**: Please complete the official [React Native Environment Setup](https://reactnative.dev/docs/environment-setup) — up to the **“Creating a new application”** step — before proceeding.
+
+---
+
+## 🚀 Getting Started
+
+Follow the steps below to launch your React Native project using this UI component library.
+
+### Step 1: Start the Metro Bundler
+
+Metro is the JavaScript bundler that runs with React Native. To start it, run the following command from the root of your project:
 
 ```bash
 yarn start
 ```
 
-#### Step 2: Start your Application
+Keep Metro running in its own terminal.
 
-Let Metro Bundler run in its _own_ terminal. Open a _new_ terminal from the _root_ of your my-care-mobile project dir. Run the following command to start your _Android_ or _iOS_ app:
+---
 
-#### For Android
+### Step 2: Launch Your App
+
+In a **new terminal**, from your project root, run the appropriate command based on your platform:
+
+#### ▶️ Android
 
 ```bash
 yarn android
 ```
 
-#### For iOS
+#### 🍎 iOS
 
-```
+```bash
 yarn ios
 ```
 
-If everything is set up _correctly_, you should see your new app running in your _Android Emulator_ or _iOS Simulator_ shortly provided you have set up your emulator/simulator correctly.
+Once the build completes, you should see your app running in the emulator or simulator — with components styled and powered by this library.
 
-This is one way to run your app — you can also run it directly from within Android Studio and Xcode respectively.
+> 💡 You can also run your app directly via Android Studio or Xcode if you prefer.
 
+---
 
-## Contributing to rnboilerplate 
-<!--- If your README is long or you have some specific process or steps you want contributors to follow, consider creating a separate CONTRIBUTING.md file--->
-To contribute to rnboilerplate, follow these steps:
+## 🧩 Available Components
 
-1. Clone this repository.
-2. Create a branch: `git checkout -b <branch_name>`.
-3. Make your changes and commit them: `git commit -m '<commit_message>'`
-4. Push to the branch: `git push`
-5. Create the pull request.
+This UI library includes a growing collection of reusable and themeable components such as:
 
-## Contributors
+- Buttons (with variants and icons)
+- Cards
+- Modals
+- Inputs
+- Avatars
+- Badges
+- ...and more
 
-Thanks to the following people who have contributed to rnboilerplate project:
+> 📚 Full documentation coming soon!
 
-* [@IbrahiimKhan](https://github.com/IbrahiimKhan) 📖
+---
 
+## 🤝 Contributing
 
-## Contact
+We welcome contributions from the community! To contribute:
 
-If you want to contact me you can reach me at <khan.ask.ibrahim@gmail.com>.
+1. Clone the repository.
+2. Create a new feature branch:  
+   ```bash
+   git checkout -b <your-feature-branch>
+   ```
+3. Make your changes and commit:  
+   ```bash
+   git commit -m "Add new component: CustomButton"
+   ```
+4. Push your changes:  
+   ```bash
+   git push
+   ```
+5. Open a Pull Request.
+
+Let’s grow this library together 🚀
+
+---
+
+## 👥 Contributors
+
+A special thanks to the following contributors:
+
+- [@IbrahiimKhan](https://github.com/IbrahiimKhan) 🛠️
+
+---
+
+## 📬 Contact
+
+For questions, feedback, or collaboration inquiries:
+
+📧 **Email**: [khan.ask.ibrahim@gmail.com](mailto:khan.ask.ibrahim@gmail.com)
