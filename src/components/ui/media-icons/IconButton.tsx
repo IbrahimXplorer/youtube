@@ -57,6 +57,7 @@ export const IconButton: FC<IconButtonProps> = ({
     color,
     iconStyle,
     disabled = false,
+    type = 'materialCommunity',
     padding,
     ...rest
 }) => {
@@ -73,7 +74,7 @@ export const IconButton: FC<IconButtonProps> = ({
             borderColor={iconStyle === 'outlined' ? color : undefined}
             {...rest}
         >
-            <Icon icon={icon} variant={variant} size={size} color={color} />
+            <Icon icon={icon} variant={variant} size={size} color={color} type={type} />
         </RestyleView>
     );
 

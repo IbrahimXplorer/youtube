@@ -1,11 +1,10 @@
-import React, {type ReactElement} from 'react';
-import {NavigationContainer} from '@react-navigation/native';
-import {ThemeProvider} from '@shopify/restyle';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import { ThemeProvider } from '@shopify/restyle';
+import React, { type ReactElement } from 'react';
 
 import theme from '@/theme';
 import 'react-native-gesture-handler';
-import HomeScreen from './screen/HomeScreen';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+import Navigator from './navigators';
 
 export type RootNavigatorParamList = {
   Home: undefined;
@@ -13,16 +12,12 @@ export type RootNavigatorParamList = {
 
 interface AppProps {}
 
-const Stack = createNativeStackNavigator<RootNavigatorParamList>();
-
 const App = (_props: AppProps): ReactElement => {
   return (
     <ThemeProvider theme={theme}>
-      <NavigationContainer>
-        <Stack.Navigator screenOptions={{headerShown: false}}>
-          <Stack.Screen name="Home" component={HomeScreen} />
-        </Stack.Navigator>
-      </NavigationContainer>
+      <SafeAreaProvider>
+        <Navigator />
+      </SafeAreaProvider>
     </ThemeProvider>
   );
 };
