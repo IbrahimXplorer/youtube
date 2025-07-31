@@ -17,7 +17,7 @@ export const apiSlice = createApi({
         url: '/videos',
         params: {
           ...params,
-          key: API_KEY, // Add API key here
+          key: API_KEY,
         },
       }),
     }),

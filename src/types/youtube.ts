@@ -19,7 +19,7 @@ export interface Snippet {
   publishTime: string;
 }
 
-export interface VideoItem {
+export interface VideoItemType {
   kind: string;
   etag: string;
   id: {
@@ -38,7 +38,7 @@ export interface YouTubeVideoResponse {
     totalResults: number;
     resultsPerPage: number;
   };
-  items: VideoItem[];
+  items: VideoItemType[];
 }
 
 

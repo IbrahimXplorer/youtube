@@ -1,12 +1,22 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/no-unstable-nested-components */
-import {Box, Screen, Text, VideoItem} from '@/components';
-import {useGetVideosQuery} from '@/store/services/apiSlice';
+import { Box, Screen, Text, VideoItem } from '@/components';
+import { useGetVideosQuery } from '@/store/services/apiSlice';
 import theme from '@/theme';
-import {FlashList} from '@shopify/flash-list';
-import React, {useEffect, useState} from 'react';
-import {ActivityIndicator} from 'react-native';
+import {
+  RootNavigatorScreenProps,
+} from '@/types/navigation';
+import { VideoItemType } from '@/types/youtube';
+import { FlashList } from '@shopify/flash-list';
+import React, { FC, useEffect, useState } from 'react';
+import { ActivityIndicator } from 'react-native';
 
-const HomeScreen = () => {
+interface HomeScreenProps
+  extends RootNavigatorScreenProps<
+    'AuthenticatedStack' | 'UnAuthenticatedStack'
+  > {}
+
+const HomeScreen: FC<HomeScreenProps> = ({navigation}) => {
   const [pageToken, setPageToken] = useState<string | undefined>(undefined);
   const [videos, setVideos] = useState<any[]>([]);
   const [isRefreshing, setIsRefreshing] = useState(false);
@@ -46,6 +56,13 @@ const HomeScreen = () => {
     }
   };
 
+  const handleVideoPress = (video:VideoItemType) => {
+    navigation.navigate('AuthenticatedStack', {
+      screen: 'SingleVideo',
+      params: {video},
+    });
+  };
+
   // Footer loader
   const renderFooter = () => {
     if (!hasNextPage || isRefreshing) {
@@ -68,7 +85,9 @@ const HomeScreen = () => {
           data={videos}
           keyExtractor={item => item.id?.toString()}
           estimatedItemSize={100}
-          renderItem={({item}) => <VideoItem item={item} />}
+          renderItem={({item}) => (
+            <VideoItem item={item} onPress={() => handleVideoPress(item)} />
+          )}
           ItemSeparatorComponent={() => <Box height={theme.spacing[5]} />}
           onEndReached={handleEndReached}
           onEndReachedThreshold={0.5}

@@ -6,6 +6,7 @@ import {
 } from '@react-navigation/native';
 import {type NativeStackScreenProps} from '@react-navigation/native-stack';
 import {type ComponentProps} from 'react';
+import { VideoItemType } from './youtube';
 
 export interface NavigationProps
   extends Partial<ComponentProps<typeof NavigationContainer>> {}
@@ -19,14 +20,14 @@ export type RootNavigatorParamList = {
 //unauthenticated stack related types
 
 export type UnAuthenticatedStackNavigatorParamList = {
-  Login: undefined;
-  Onboarding: undefined;
   Root: NavigatorScreenParams<BottomTabNavigatorParamList>;
 };
 
 //authenticated stack related types
 
-export type AuthenticatedStackNavigatorParamList = {};
+export type AuthenticatedStackNavigatorParamList = {
+    SingleVideo:{video:VideoItemType}
+};
 
 //all screen params for bottom tab
 export type BottomTabNavigatorParamList = {

@@ -8,6 +8,7 @@ import {
 } from '@/types/navigation';
 
 import UnAuthenticatedNavigator from '@/navigators/UnAuthenticatedNavigator';
+import AuthenticatedNavigator from './AuthenticatedNavigator';
 
 const Stack = createNativeStackNavigator<RootNavigatorParamList>();
 
@@ -18,6 +19,10 @@ const Navigator = (props: NavigationProps): ReactElement => {
         <Stack.Screen
           name="UnAuthenticatedStack"
           component={UnAuthenticatedNavigator}
+        />
+        <Stack.Screen
+          name="AuthenticatedStack"
+          component={AuthenticatedNavigator}
         />
       </Stack.Navigator>
     </NavigationContainer>
