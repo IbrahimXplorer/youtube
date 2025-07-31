@@ -51,4 +51,5 @@ export type GetVideosParams = {
   playlistId?: string;
   chart?:string;
   regionCode?:string;
+  pageToken?:string;
 };
