@@ -1,16 +1,35 @@
-import {Header, Screen, Text} from '@/components';
-import useHeader from '@/hooks/useHeader';
+/* eslint-disable react/no-unstable-nested-components */
+// screens/HomeScreen.tsx
+import {Box, Screen, Text, VideoItem} from '@/components';
+import {useGetVideosQuery} from '@/store/services/apiSlice';
+import theme from '@/theme';
+import {FlashList} from '@shopify/flash-list';
 import React from 'react';
 
 const HomeScreen = () => {
-    useHeader(()=><Header >
-        <Header.BackAction />
-        <Header.Content title="Home Screen" subTitle="John Doe"/>
-        <Header.Action variant="vector" icon="bell" />
-    </Header>);
+  const {data, error, isLoading} = useGetVideosQuery({
+    part: 'snippet',
+    type: 'video',
+    maxResults: 10,
+    chart: 'mostPopular',
+    regionCode: 'us',
+  });
+
+  const videos = data?.items ?? [];
+
   return (
-    <Screen preset="auto" safeAreaEdges={['top']}>
-      <Text>This is home screen</Text>
+    <Screen preset="fixed" safeAreaEdges={['top']}>
+      {isLoading && <Text>Loading...</Text>}
+      {error && <Text>Error fetching videos</Text>}
+      {!isLoading && !error && (
+        <FlashList
+          data={videos}
+          keyExtractor={item => item.id?.toString()}
+          estimatedItemSize={100}
+          renderItem={({item}) => <VideoItem item={item} />}
+          ItemSeparatorComponent={() => <Box height={theme.spacing[5]} />}
+        />
+      )}
     </Screen>
   );
 };

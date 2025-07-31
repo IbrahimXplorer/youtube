@@ -16,6 +16,7 @@ import {
 import {AccountStack} from './stack/AccountStack';
 import {HomeStack} from './stack/HomeStack';
 import {VideoStack} from './stack/VideoStack';
+import {detectDevice} from '@/utils';
 
 const Tab = createBottomTabNavigator<BottomTabNavigatorParamList>();
 
@@ -106,7 +107,7 @@ export const BottomTabNavigator: FC<
 export default BottomTabNavigator;
 
 const $tabBar: ViewStyle = {
-  height: theme.spacing[20],
+  height: detectDevice?.isIOS ? theme.spacing[22] : theme.spacing[20],
 };
 
 const {b5semiBold} = theme.textVariants;
