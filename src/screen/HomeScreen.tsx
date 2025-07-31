@@ -5,7 +5,7 @@ import React from 'react';
 const HomeScreen = () => {
     useHeader(()=><Header >
         <Header.BackAction />
-        <Header.Content title="hellow" subTitle="John Doe"/>
+        <Header.Content title="Home Screen" subTitle="John Doe"/>
         <Header.Action variant="vector" icon="bell" />
     </Header>);
   return (
