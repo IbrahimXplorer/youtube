@@ -1,3 +1,5 @@
+import React, {FC, useCallback, useEffect, useRef, useState} from 'react';
+import {Alert, FlatList} from 'react-native';
 import {
   Box,
   Button,
@@ -23,50 +25,43 @@ import {
   serverTimestamp,
   setDoc,
 } from '@react-native-firebase/firestore';
-import React, {FC, useCallback, useEffect, useRef, useState} from 'react';
-import {Alert, FlatList} from 'react-native';
 import YoutubePlayer, {YoutubeIframeRef} from 'react-native-youtube-iframe';
 
 interface SingleVideoScreenProps
   extends AuthenticatedStackNavigatorScreenProps<'SingleVideo'> {}
 
-export const SingleVideoScreen: FC<SingleVideoScreenProps> = ({
-  route,
-  navigation,
-}) => {
-  const {video} = route?.params || {};
+const SingleVideoScreen: FC<SingleVideoScreenProps> = ({route, navigation}) => {
+  const {video} = route.params || {};
+  const videoId = video?.id;
+  const db = getFirestore();
+
   const [playing, setPlaying] = useState(true);
   const [liked, setLiked] = useState(false);
   const [likeCount, setLikeCount] = useState(0);
-  const playerRef = useRef<YoutubeIframeRef>(null);
   const [commentText, setCommentText] = useState('');
   const [comments, setComments] = useState<any[]>([]);
-  const videoId = video.id;
-  const db = getFirestore();
 
-  // like, comments fetching
+  const playerRef = useRef<YoutubeIframeRef>(null);
+
+  const getUser = () => getAuth().currentUser;
+
+  const getLikeDocRef = (uid: string) =>
+    doc(collection(doc(collection(db, 'likes'), videoId), 'likedBy'), uid);
+
   const fetchLikes = async () => {
-    const user = getAuth().currentUser;
-    if (!user || !videoId) {
-      return;
-    }
+    const user = getUser();
+    if (!user || !videoId) {return;}
 
     try {
-      const likeDocRef = doc(
-        collection(doc(collection(db, 'likes'), videoId), 'likedBy'),
-        user.uid,
-      );
-
-      const likeDoc = await getDoc(likeDocRef);
+      const likeDoc = await getDoc(getLikeDocRef(user.uid));
       setLiked(likeDoc.exists());
 
       const snapshot = await getDocs(
         collection(doc(collection(db, 'likes'), videoId), 'likedBy'),
       );
-
       setLikeCount(snapshot.size);
-    } catch (err) {
-      console.error('Error fetching like info:', err);
+    } catch (error) {
+      console.error('Error fetching like info:', error);
     }
   };
 
@@ -80,12 +75,56 @@ export const SingleVideoScreen: FC<SingleVideoScreenProps> = ({
         (a, b) => b.timestamp?.seconds - a.timestamp?.seconds,
       );
       setComments(sorted);
-    } catch (err) {
-      console.error('Error fetching comments:', err);
+    } catch (error) {
+      console.error('Error fetching comments:', error);
     }
   };
 
-  //handlers
+  const handleLike = async () => {
+    const user = getUser();
+    if (!user || !videoId) {
+      navigation.navigate('Login');
+      return;
+    }
+
+    try {
+      const ref = getLikeDocRef(user.uid);
+      if (liked) {
+        await deleteDoc(ref);
+        setLiked(false);
+        setLikeCount(prev => prev - 1);
+      } else {
+        await setDoc(ref, {liked: true, timestamp: serverTimestamp()});
+        setLiked(true);
+        setLikeCount(prev => prev + 1);
+      }
+    } catch {
+      Alert.alert('Error', 'Something went wrong');
+    }
+  };
+
+  const handleAddComment = async () => {
+    const user = getUser();
+    const trimmedText = commentText.trim();
+
+    if (!user || !trimmedText) {return;}
+
+    try {
+      const ref = collection(db, 'comments', videoId, 'commentList');
+      await setDoc(doc(ref), {
+        userId: user.uid,
+        username: user.email,
+        text: trimmedText,
+        timestamp: serverTimestamp(),
+      });
+
+      setCommentText('');
+      fetchComments();
+    } catch {
+      Alert.alert('Error', 'Failed to post comment');
+    }
+  };
+
   const onStateChange = useCallback((state: string) => {
     if (state === 'ended') {
       setPlaying(false);
@@ -93,62 +132,9 @@ export const SingleVideoScreen: FC<SingleVideoScreenProps> = ({
     }
   }, []);
 
-  const handleLike = async () => {
-    const user = getAuth().currentUser;
-    if (!user || !video?.id) {
-      navigation.navigate('Login');
-      return;
-    }
-
-    const likeDocRef = doc(
-      collection(doc(collection(db, 'likes'), videoId), 'likedBy'),
-      user.uid,
-    );
-
-    try {
-      if (liked) {
-        await deleteDoc(likeDocRef);
-        setLiked(false);
-        setLikeCount(prev => prev - 1);
-      } else {
-        await setDoc(likeDocRef, {
-          liked: true,
-          timestamp: serverTimestamp(),
-        });
-        setLiked(true);
-        setLikeCount(prev => prev + 1);
-      }
-    } catch (error) {
-      Alert.alert('Error', 'Something went wrong');
-    }
-  };
-
-  const handleAddComment = async () => {
-    const user = getAuth().currentUser;
-    if (!user || !commentText.trim()) {
-      return;
-    }
-
-    try {
-      const commentRef = collection(db, 'comments', videoId, 'commentList');
-      await setDoc(doc(commentRef), {
-        userId: user.uid,
-        username: user.email,
-        text: commentText.trim(),
-        timestamp: serverTimestamp(),
-      });
-
-      setCommentText('');
-      fetchComments();
-    } catch (err) {
-      Alert.alert('Error', 'Failed to post comment');
-    }
-  };
-
-  //side effects
   useEffect(() => {
-    fetchComments();
     fetchLikes();
+    fetchComments();
   }, []);
 
   return (
@@ -160,10 +146,12 @@ export const SingleVideoScreen: FC<SingleVideoScreenProps> = ({
         iconStyle="contained"
         position="absolute"
         top={10}
-        color="primary"
-        zIndex={10}
         left={10}
+        zIndex={10}
+        color="primary"
+        onPress={() => navigation.goBack()}
       />
+
       <YoutubePlayer
         ref={playerRef}
         height={230}
@@ -175,6 +163,7 @@ export const SingleVideoScreen: FC<SingleVideoScreenProps> = ({
       <Text numberOfLines={2} variant="b3semiBold" my={3} mx={4}>
         {video?.snippet?.title}
       </Text>
+
       <Box g={3}>
         <HStack justifyContent="space-between" mx={5} g={4}>
           <Text numberOfLines={1} variant="heading3">
@@ -185,6 +174,7 @@ export const SingleVideoScreen: FC<SingleVideoScreenProps> = ({
           </Button>
         </HStack>
       </Box>
+
       <Box ml={5}>
         <Clickable onPress={handleLike} mt={4} mx={2}>
           <Box
@@ -208,6 +198,7 @@ export const SingleVideoScreen: FC<SingleVideoScreenProps> = ({
           </Box>
         </Clickable>
       </Box>
+
       <Box
         mx={4}
         mt={6}
@@ -233,10 +224,12 @@ export const SingleVideoScreen: FC<SingleVideoScreenProps> = ({
 
         <FlatList
           data={comments}
-          ListEmptyComponent={()=><Text textAlign="center">No comments found!</Text>}
-          ItemSeparatorComponent={() => <Box height={theme.spacing[3]} />}
-          keyExtractor={(_, i) => i.toString()}
+          keyExtractor={(_, index) => index.toString()}
           renderItem={({item}) => <CommentCard {...item} />}
+          ItemSeparatorComponent={() => <Box height={theme.spacing[3]} />}
+          ListEmptyComponent={
+            <Text textAlign="center">No comments found!</Text>
+          }
         />
       </Box>
     </Screen>
