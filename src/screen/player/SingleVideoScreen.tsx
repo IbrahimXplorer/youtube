@@ -11,12 +11,12 @@ import {
   Screen,
   Text,
 } from '@/components';
-import { saveVideo } from '@/store/services/savedVideoSlices';
-import { AppDispatch, RootState } from '@/store/store';
+import {saveVideo} from '@/store/services/savedVideoSlices';
+import {AppDispatch, RootState} from '@/store/store';
 import theme from '@/theme';
-import { AuthenticatedStackNavigatorScreenProps } from '@/types/navigation';
-import { VideoItemType } from '@/types/youtube';
-import { getAuth } from '@react-native-firebase/auth';
+import {AuthenticatedStackNavigatorScreenProps} from '@/types/navigation';
+import {VideoItemType} from '@/types/youtube';
+import {getAuth} from '@react-native-firebase/auth';
 import {
   collection,
   deleteDoc,
@@ -27,11 +27,11 @@ import {
   serverTimestamp,
   setDoc,
 } from '@react-native-firebase/firestore';
-import { FlashList } from '@shopify/flash-list';
-import React, { FC, useCallback, useEffect, useRef, useState } from 'react';
-import { Alert } from 'react-native';
-import YoutubePlayer, { YoutubeIframeRef } from 'react-native-youtube-iframe';
-import { useDispatch, useSelector } from 'react-redux';
+import {FlashList} from '@shopify/flash-list';
+import React, {FC, useCallback, useEffect, useRef, useState} from 'react';
+import {Alert} from 'react-native';
+import YoutubePlayer, {YoutubeIframeRef} from 'react-native-youtube-iframe';
+import {useDispatch, useSelector} from 'react-redux';
 
 interface SingleVideoScreenProps
   extends AuthenticatedStackNavigatorScreenProps<'SingleVideo'> {}
@@ -163,32 +163,28 @@ const SingleVideoScreen: FC<SingleVideoScreenProps> = ({route, navigation}) => {
     fetchComments();
   }, []);
 
-  console.log(comments);
-
   return (
     <Screen safeAreaEdges={['top']}>
-      <IconButton
-        icon="chevron-left"
-        type="feather"
-        variant="vector"
-        iconStyle="contained"
-        position="absolute"
-        top={10}
-        left={10}
-        zIndex={20}
-        color="primary"
-        onPress={() => navigation.goBack()}
-      />
-
-      <Box zIndex={10}>
-        <YoutubePlayer
-          ref={playerRef}
-          height={230}
-          play={playing}
-          videoId={videoId}
-          onChangeState={onStateChange}
+      <Box left={20} position="absolute" zIndex={10} top={20}>
+        <IconButton
+          icon="chevron-left"
+          type="feather"
+          variant="vector"
+          iconStyle="contained"
+          position="absolute"
+          zIndex={20}
+          color="primary"
+          onPress={() => navigation.goBack()}
         />
       </Box>
+
+      <YoutubePlayer
+        ref={playerRef}
+        height={230}
+        play={playing}
+        videoId={videoId}
+        onChangeState={onStateChange}
+      />
       <Text numberOfLines={2} variant="b3semiBold" my={3} mx={4}>
         {video?.snippet?.title}
       </Text>
