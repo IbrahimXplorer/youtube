@@ -17,12 +17,12 @@ const Navigator = (props: NavigationProps): ReactElement => {
     <NavigationContainer {...props}>
       <Stack.Navigator screenOptions={{headerShown: false}}>
         <Stack.Screen
-          name="UnAuthenticatedStack"
-          component={UnAuthenticatedNavigator}
-        />
-        <Stack.Screen
           name="AuthenticatedStack"
           component={AuthenticatedNavigator}
+        />
+        <Stack.Screen
+          name="UnAuthenticatedStack"
+          component={UnAuthenticatedNavigator}
         />
       </Stack.Navigator>
     </NavigationContainer>

@@ -4,6 +4,7 @@ import React, { type ReactElement } from 'react';
 import { AuthenticatedStackNavigatorParamList } from '@/types/navigation';
 
 import SingleVideoScreen from '@/screen/player/SingleVideoScreen';
+import LoginScreen from '@/screen/auth/LoginScreen';
 
 const Stack =
   createNativeStackNavigator<AuthenticatedStackNavigatorParamList>();
@@ -11,6 +12,11 @@ const Stack =
 export const AuthenticatedNavigator = (): ReactElement => {
   return (
     <Stack.Navigator screenOptions={{headerShown: false}}>
+      <Stack.Screen
+        name="Login"
+        component={LoginScreen}
+        options={{animation: 'fade', animationDuration: 500}}
+      />
       <Stack.Screen
         name="SingleVideo"
         component={SingleVideoScreen}

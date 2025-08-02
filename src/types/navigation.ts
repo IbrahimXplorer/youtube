@@ -27,6 +27,7 @@ export type UnAuthenticatedStackNavigatorParamList = {
 
 export type AuthenticatedStackNavigatorParamList = {
     SingleVideo:{video:VideoItemType}
+    Login:undefined
 };
 
 //all screen params for bottom tab

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "161098192546",
+    "project_id": "fir-6e11f",
+    "storage_bucket": "fir-6e11f.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:161098192546:android:9d12b90dae12ac2bc929fb",
+        "android_client_info": {
+          "package_name": "com.youtube"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAW7N_lYzBNfsHoB0uxTyhADCRxVOMvXeU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -196,6 +196,7 @@ const styles = StyleSheet.create({
         gap: 12,
         height: '100%',
         justifyContent: 'center',
+        width:'100%',
     },
 });
 
