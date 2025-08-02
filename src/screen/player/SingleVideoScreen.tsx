@@ -26,9 +26,10 @@ import {
   setDoc,
 } from '@react-native-firebase/firestore';
 import YoutubePlayer, {YoutubeIframeRef} from 'react-native-youtube-iframe';
-import {useDispatch} from 'react-redux';
-import {AppDispatch} from '@/store/store';
+import {useDispatch, useSelector} from 'react-redux';
+import {AppDispatch, RootState} from '@/store/store';
 import {saveVideo} from '@/store/services/savedVideoSlices';
+import {VideoItemType} from '@/types/youtube';
 
 interface SingleVideoScreenProps
   extends AuthenticatedStackNavigatorScreenProps<'SingleVideo'> {}
@@ -38,6 +39,13 @@ const SingleVideoScreen: FC<SingleVideoScreenProps> = ({route, navigation}) => {
   const videoId = video?.id;
   const db = getFirestore();
   const dispatch = useDispatch<AppDispatch>();
+  const {savedVideos} = useSelector((state: RootState) => state.savedVideos);
+
+  const isSaved = savedVideos.find(
+    (item: VideoItemType) => item.id === video.id,
+  )
+    ? true
+    : false;
 
   const [playing, setPlaying] = useState(true);
   const [liked, setLiked] = useState(false);
@@ -165,19 +173,20 @@ const SingleVideoScreen: FC<SingleVideoScreenProps> = ({route, navigation}) => {
         position="absolute"
         top={10}
         left={10}
-        zIndex={10}
+        zIndex={20}
         color="primary"
         onPress={() => navigation.goBack()}
       />
 
-      <YoutubePlayer
-        ref={playerRef}
-        height={230}
-        play={playing}
-        videoId={videoId}
-        onChangeState={onStateChange}
-      />
-
+      <Box zIndex={10}>
+        <YoutubePlayer
+          ref={playerRef}
+          height={230}
+          play={playing}
+          videoId={videoId}
+          onChangeState={onStateChange}
+        />
+      </Box>
       <Text numberOfLines={2} variant="b3semiBold" my={3} mx={4}>
         {video?.snippet?.title}
       </Text>
@@ -187,7 +196,7 @@ const SingleVideoScreen: FC<SingleVideoScreenProps> = ({route, navigation}) => {
           <Text numberOfLines={1} variant="heading3">
             {video?.snippet?.channelTitle}
           </Text>
-          <Button size="sm" px={3} width={theme.sizes.width / 5}>
+          <Button disabled size="sm" px={3} width={theme.sizes.width / 5}>
             <Button.Text title="Subscribe" />
           </Button>
         </HStack>
@@ -218,11 +227,11 @@ const SingleVideoScreen: FC<SingleVideoScreenProps> = ({route, navigation}) => {
             </Text>
           </Box>
         </Clickable>
-        <Clickable onPress={handelSave} mt={4}>
+        <Clickable onPress={handelSave} disabled={isSaved} mt={4}>
           <Box
-            bg="primary50"
+            bg={isSaved ? 'neutral100' : 'primary50'}
             borderWidth={1}
-            borderColor="primary"
+            borderColor={isSaved ? 'neutral100' : 'primary'}
             px={4}
             py={2}
             flexDirection="row"
@@ -232,7 +241,7 @@ const SingleVideoScreen: FC<SingleVideoScreenProps> = ({route, navigation}) => {
             borderRadius="rounded-full">
             <Icon
               icon={liked ? 'bookmark-o' : 'bookmark'}
-              type="feather"
+              type="fa"
               variant="vector"
               color="primary"
               size={7}

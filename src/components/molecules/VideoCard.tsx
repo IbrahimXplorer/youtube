@@ -12,13 +12,32 @@ import {TouchableOpacityProps} from 'react-native';
 
 type VideoCardProps = {
   item: any;
+  onDelete?: (id: string) => void;
+  showDeleteIcon?: boolean;
 } & TouchableOpacityProps;
 
-export const VideoCard = ({item, onPress}: VideoCardProps) => {
+export const VideoCard = ({
+  item,
+  showDeleteIcon = false,
+  onPress,
+  onDelete,
+}: VideoCardProps) => {
   const {title, channelTitle, thumbnails} = item.snippet;
 
   return (
     <Clickable onPress={onPress}>
+      {showDeleteIcon && (
+        <Box zIndex={10} position="absolute" right={10} top={10}>
+          <IconButton
+            onPress={() => onDelete?.(item?.id)}
+            type="ant"
+            icon="delete"
+            color="danger"
+            variant="vector"
+            iconStyle="contained"
+          />
+        </Box>
+      )}
       <Box g={3}>
         <ImageBanner
           source={thumbnails.medium.url}
@@ -33,15 +52,10 @@ export const VideoCard = ({item, onPress}: VideoCardProps) => {
               <Text numberOfLines={2} variant="b3semiBold">
                 {title}
               </Text>
-              <Text numberOfLines={1} variant="b4bold">
+              <Text numberOfLines={1} color="primary" variant="b4bold">
                 {channelTitle}
               </Text>
             </Box>
-            <IconButton
-              icon="dots-three-vertical"
-              type="entypo"
-              variant="vector"
-            />
           </HStack>
         </Box>
       </Box>
