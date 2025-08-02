@@ -13,13 +13,13 @@ export const AuthenticatedNavigator = (): ReactElement => {
   return (
     <Stack.Navigator screenOptions={{headerShown: false}}>
       <Stack.Screen
-        name="Login"
-        component={LoginScreen}
+        name="SingleVideo"
+        component={SingleVideoScreen}
         options={{animation: 'fade', animationDuration: 500}}
       />
       <Stack.Screen
-        name="SingleVideo"
-        component={SingleVideoScreen}
+        name="Login"
+        component={LoginScreen}
         options={{animation: 'fade', animationDuration: 500}}
       />
     </Stack.Navigator>

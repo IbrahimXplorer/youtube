@@ -27,3 +27,4 @@ export * from './ui/forms/Switch';
 
 
 export * from './molecules/VideoItem';
+export * from './molecules/CommentCard';

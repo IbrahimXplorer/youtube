@@ -22,10 +22,7 @@ export interface Snippet {
 export interface VideoItemType {
   kind: string;
   etag: string;
-  id: {
-    kind: string;
-    videoId: string;
-  };
+  id: string;
   snippet: Snippet;
 }
 
