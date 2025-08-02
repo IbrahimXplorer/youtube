@@ -1,5 +1,4 @@
-import React, {FC, useCallback, useEffect, useRef, useState} from 'react';
-import {Alert, FlatList} from 'react-native';
+/* eslint-disable react/no-unstable-nested-components */
 import {
   Box,
   Button,
@@ -12,9 +11,12 @@ import {
   Screen,
   Text,
 } from '@/components';
+import { saveVideo } from '@/store/services/savedVideoSlices';
+import { AppDispatch, RootState } from '@/store/store';
 import theme from '@/theme';
-import {AuthenticatedStackNavigatorScreenProps} from '@/types/navigation';
-import {getAuth} from '@react-native-firebase/auth';
+import { AuthenticatedStackNavigatorScreenProps } from '@/types/navigation';
+import { VideoItemType } from '@/types/youtube';
+import { getAuth } from '@react-native-firebase/auth';
 import {
   collection,
   deleteDoc,
@@ -25,11 +27,11 @@ import {
   serverTimestamp,
   setDoc,
 } from '@react-native-firebase/firestore';
-import YoutubePlayer, {YoutubeIframeRef} from 'react-native-youtube-iframe';
-import {useDispatch, useSelector} from 'react-redux';
-import {AppDispatch, RootState} from '@/store/store';
-import {saveVideo} from '@/store/services/savedVideoSlices';
-import {VideoItemType} from '@/types/youtube';
+import { FlashList } from '@shopify/flash-list';
+import React, { FC, useCallback, useEffect, useRef, useState } from 'react';
+import { Alert } from 'react-native';
+import YoutubePlayer, { YoutubeIframeRef } from 'react-native-youtube-iframe';
+import { useDispatch, useSelector } from 'react-redux';
 
 interface SingleVideoScreenProps
   extends AuthenticatedStackNavigatorScreenProps<'SingleVideo'> {}
@@ -276,8 +278,9 @@ const SingleVideoScreen: FC<SingleVideoScreenProps> = ({route, navigation}) => {
           />
         </HStack>
 
-        <FlatList
+        <FlashList
           data={comments}
+          estimatedItemSize={50}
           removeClippedSubviews={false}
           keyExtractor={(_, index) => index.toString()}
           renderItem={({item}) => <CommentCard {...item} />}

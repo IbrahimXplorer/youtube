@@ -1,10 +1,11 @@
-import {Box, Screen, Text, VideoCard} from '@/components';
-import {removeVideo} from '@/store/services/savedVideoSlices';
-import {AppDispatch, RootState} from '@/store/store';
+/* eslint-disable react/no-unstable-nested-components */
+import { Box, EmtpyListCard, Screen, VideoCard } from '@/components';
+import { removeVideo } from '@/store/services/savedVideoSlices';
+import { AppDispatch, RootState } from '@/store/store';
 import theme from '@/theme';
-import {FlashList} from '@shopify/flash-list';
+import { FlashList } from '@shopify/flash-list';
 import React from 'react';
-import {useDispatch, useSelector} from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 export const VideoScreen = () => {
   const videos = useSelector(
@@ -21,11 +22,7 @@ export const VideoScreen = () => {
       <FlashList
         data={videos}
         keyExtractor={item => item.id?.toString()}
-        ListEmptyComponent={() => (
-          <Text textAlign="center" mt={5}>
-            No videos found!
-          </Text>
-        )}
+        ListEmptyComponent={<EmtpyListCard mt={5} />}
         estimatedItemSize={100}
         renderItem={({item}) => (
           <VideoCard

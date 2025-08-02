@@ -1,10 +1,9 @@
-import React, {FC} from 'react';
-import {Box} from '../ui/layout/Box';
-import {Text} from '../ui/typography/Text';
-import ImageBanner from '../ui/media-icons/ImageBanner';
-import theme from '@/theme';
-import {getImage} from '@assets/constants/images';
+import { getImage } from '@assets/constants/images';
+import React, { FC } from 'react';
+import { Box } from '../ui/layout/Box';
 import HStack from '../ui/layout/HStack';
+import ImageBanner from '../ui/media-icons/ImageBanner';
+import { Text } from '../ui/typography/Text';
 
 type CommentCardProps = {
   userName: string;

@@ -1,15 +1,12 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-/* eslint-disable react/no-unstable-nested-components */
-import { Box, Screen, Text, VideoCard } from '@/components';
-import { useGetVideosQuery } from '@/store/services/apiSlice';
+import {Box, EmtpyListCard, Screen, Text, VideoCard} from '@/components';
+import {useGetVideosQuery} from '@/store/services/apiSlice';
 import theme from '@/theme';
-import {
-  RootNavigatorScreenProps,
-} from '@/types/navigation';
-import { VideoItemType } from '@/types/youtube';
-import { FlashList } from '@shopify/flash-list';
-import React, { FC, useEffect, useState } from 'react';
-import { ActivityIndicator } from 'react-native';
+import {RootNavigatorScreenProps} from '@/types/navigation';
+import {VideoItemType} from '@/types/youtube';
+import {FlashList} from '@shopify/flash-list';
+import React, {FC, useEffect, useState} from 'react';
+import {ActivityIndicator} from 'react-native';
 
 interface HomeScreenProps
   extends RootNavigatorScreenProps<
@@ -56,7 +53,7 @@ const HomeScreen: FC<HomeScreenProps> = ({navigation}) => {
     }
   };
 
-  const handleVideoPress = (video:VideoItemType) => {
+  const handleVideoPress = (video: VideoItemType) => {
     navigation.navigate('AuthenticatedStack', {
       screen: 'SingleVideo',
       params: {video},
@@ -83,8 +80,8 @@ const HomeScreen: FC<HomeScreenProps> = ({navigation}) => {
       {!isLoading && !error && (
         <FlashList
           data={videos}
-          ListEmptyComponent={()=><Text textAlign="center" marginTop={10}>No videos found!</Text>}
-          keyExtractor={item => item.id?.toString()}
+          ListEmptyComponent={<EmtpyListCard />}
+          keyExtractor={item => item?.id?.toString()}
           estimatedItemSize={100}
           renderItem={({item}) => (
             <VideoCard item={item} onPress={() => handleVideoPress(item)} />
@@ -94,7 +91,7 @@ const HomeScreen: FC<HomeScreenProps> = ({navigation}) => {
           onEndReachedThreshold={0.5}
           refreshing={isRefreshing}
           onRefresh={handleRefresh}
-          ListFooterComponent={renderFooter}
+          // ListFooterComponent={renderFooter}
         />
       )}
     </Screen>
