@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/no-unstable-nested-components */
-import { Box, Screen, Text, VideoItem } from '@/components';
+import { Box, Screen, Text, VideoCard } from '@/components';
 import { useGetVideosQuery } from '@/store/services/apiSlice';
 import theme from '@/theme';
 import {
@@ -83,10 +83,11 @@ const HomeScreen: FC<HomeScreenProps> = ({navigation}) => {
       {!isLoading && !error && (
         <FlashList
           data={videos}
+          ListEmptyComponent={()=><Text textAlign="center" marginTop={10}>No videos found!</Text>}
           keyExtractor={item => item.id?.toString()}
           estimatedItemSize={100}
           renderItem={({item}) => (
-            <VideoItem item={item} onPress={() => handleVideoPress(item)} />
+            <VideoCard item={item} onPress={() => handleVideoPress(item)} />
           )}
           ItemSeparatorComponent={() => <Box height={theme.spacing[5]} />}
           onEndReached={handleEndReached}

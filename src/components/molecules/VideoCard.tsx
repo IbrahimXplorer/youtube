@@ -1,17 +1,24 @@
-import {Box, HStack, IconButton, ImageBanner, Text} from '@/components';
+import {
+  Box,
+  Clickable,
+  HStack,
+  IconButton,
+  ImageBanner,
+  Text,
+} from '@/components';
 import theme from '@/theme';
 import React from 'react';
-import {TouchableOpacity, TouchableOpacityProps} from 'react-native';
+import {TouchableOpacityProps} from 'react-native';
 
-type VideoItemProps = {
+type VideoCardProps = {
   item: any;
 } & TouchableOpacityProps;
 
-export const VideoItem = ({item, onPress}: VideoItemProps) => {
+export const VideoCard = ({item, onPress}: VideoCardProps) => {
   const {title, channelTitle, thumbnails} = item.snippet;
 
   return (
-    <TouchableOpacity onPress={onPress}>
+    <Clickable onPress={onPress}>
       <Box g={3}>
         <ImageBanner
           source={thumbnails.medium.url}
@@ -38,8 +45,8 @@ export const VideoItem = ({item, onPress}: VideoItemProps) => {
           </HStack>
         </Box>
       </Box>
-    </TouchableOpacity>
+    </Clickable>
   );
 };
 
-export default VideoItem;
+export default VideoCard;

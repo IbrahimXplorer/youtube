@@ -90,14 +90,14 @@ export const BottomTabNavigator: FC<
         name="VideoStack"
         component={VideoStack}
         options={{
-          title: 'Home',
+          title: 'My Videos',
         }}
       />
       <Tab.Screen
         name="AccountStack"
         component={AccountStack}
         options={{
-          title: 'Home',
+          title: 'Account',
         }}
       />
     </Tab.Navigator>

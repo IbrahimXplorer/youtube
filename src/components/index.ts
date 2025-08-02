@@ -26,5 +26,5 @@ export * from './ui/layout/Screen';
 export * from './ui/forms/Switch';
 
 
-export * from './molecules/VideoItem';
+export * from './molecules/VideoCard';
 export * from './molecules/CommentCard';

@@ -26,6 +26,9 @@ import {
   setDoc,
 } from '@react-native-firebase/firestore';
 import YoutubePlayer, {YoutubeIframeRef} from 'react-native-youtube-iframe';
+import {useDispatch} from 'react-redux';
+import {AppDispatch} from '@/store/store';
+import {saveVideo} from '@/store/services/savedVideoSlices';
 
 interface SingleVideoScreenProps
   extends AuthenticatedStackNavigatorScreenProps<'SingleVideo'> {}
@@ -34,6 +37,7 @@ const SingleVideoScreen: FC<SingleVideoScreenProps> = ({route, navigation}) => {
   const {video} = route.params || {};
   const videoId = video?.id;
   const db = getFirestore();
+  const dispatch = useDispatch<AppDispatch>();
 
   const [playing, setPlaying] = useState(true);
   const [liked, setLiked] = useState(false);
@@ -50,7 +54,9 @@ const SingleVideoScreen: FC<SingleVideoScreenProps> = ({route, navigation}) => {
 
   const fetchLikes = async () => {
     const user = getUser();
-    if (!user || !videoId) {return;}
+    if (!user || !videoId) {
+      return;
+    }
 
     try {
       const likeDoc = await getDoc(getLikeDocRef(user.uid));
@@ -107,7 +113,9 @@ const SingleVideoScreen: FC<SingleVideoScreenProps> = ({route, navigation}) => {
     const user = getUser();
     const trimmedText = commentText.trim();
 
-    if (!user || !trimmedText) {return;}
+    if (!user || !trimmedText) {
+      return;
+    }
 
     try {
       const ref = collection(db, 'comments', videoId, 'commentList');
@@ -123,6 +131,10 @@ const SingleVideoScreen: FC<SingleVideoScreenProps> = ({route, navigation}) => {
     } catch {
       Alert.alert('Error', 'Failed to post comment');
     }
+  };
+
+  const handelSave = () => {
+    dispatch(saveVideo(video));
   };
 
   const onStateChange = useCallback((state: string) => {
@@ -175,16 +187,19 @@ const SingleVideoScreen: FC<SingleVideoScreenProps> = ({route, navigation}) => {
         </HStack>
       </Box>
 
-      <Box ml={5}>
-        <Clickable onPress={handleLike} mt={4} mx={2}>
+      <HStack ml={5} g={3}>
+        <Clickable onPress={handleLike} mt={4}>
           <Box
             bg="primary50"
             flexDirection="row"
-            g={3}
-            width={theme.spacing[20]}
+            borderWidth={1}
+            borderColor="primary"
+            g={2}
+            px={4}
+            py={2}
             alignItems="center"
             justifyContent="center"
-            borderRadius="rounded-sm">
+            borderRadius="rounded-full">
             <Icon
               icon={liked ? 'thumb-up-alt' : 'thumb-up-off-alt'}
               type="material"
@@ -197,7 +212,31 @@ const SingleVideoScreen: FC<SingleVideoScreenProps> = ({route, navigation}) => {
             </Text>
           </Box>
         </Clickable>
-      </Box>
+        <Clickable onPress={handelSave} mt={4}>
+          <Box
+            bg="primary50"
+            borderWidth={1}
+            borderColor="primary"
+            px={4}
+            py={2}
+            flexDirection="row"
+            g={2}
+            alignItems="center"
+            justifyContent="center"
+            borderRadius="rounded-full">
+            <Icon
+              icon={liked ? 'bookmark-o' : 'bookmark'}
+              type="feather"
+              variant="vector"
+              color="primary"
+              size={7}
+            />
+            <Text variant="b3bold" color="primary">
+              Save
+            </Text>
+          </Box>
+        </Clickable>
+      </HStack>
 
       <Box
         mx={4}

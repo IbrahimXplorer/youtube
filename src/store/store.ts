@@ -7,8 +7,11 @@ import {persistConfig} from '@/lib/persistConfig';
 
 import {apiSlice} from './services/apiSlice';
 
+import savedVideosReducer from './services/savedVideoSlices';
+
 const rootReducer = combineReducers({
   [apiSlice.reducerPath]: apiSlice.reducer, // RTK Query reducer
+   savedVideos: savedVideosReducer,
 });
 
 const persistedReducer = persistReducer<ReturnType<typeof rootReducer>>(
@@ -26,7 +29,6 @@ export const store = configureStore({
 
 export const persistor = persistStore(store);
 
-// Setup listeners for refetching
 setupListeners(store.dispatch);
 
 export type RootState = ReturnType<typeof rootReducer>;
