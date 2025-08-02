@@ -121,8 +121,12 @@ const SingleVideoScreen: FC<SingleVideoScreenProps> = ({route, navigation}) => {
       const ref = collection(db, 'comments', videoId, 'commentList');
       await setDoc(doc(ref), {
         userId: user.uid,
-        username: user.email,
+        userMail: user.email,
+        userName: user.displayName ?? 'Anonymous',
         text: trimmedText,
+        photoURL:
+          user.photoURL ||
+          'https://www.shutterstock.com/image-vector/vector-design-avatar-dummy-sign-600nw-1290556063.jpg',
         timestamp: serverTimestamp(),
       });
 
@@ -148,6 +152,8 @@ const SingleVideoScreen: FC<SingleVideoScreenProps> = ({route, navigation}) => {
     fetchLikes();
     fetchComments();
   }, []);
+
+  console.log(comments);
 
   return (
     <Screen safeAreaEdges={['top']}>
@@ -263,6 +269,7 @@ const SingleVideoScreen: FC<SingleVideoScreenProps> = ({route, navigation}) => {
 
         <FlatList
           data={comments}
+          removeClippedSubviews={false}
           keyExtractor={(_, index) => index.toString()}
           renderItem={({item}) => <CommentCard {...item} />}
           ItemSeparatorComponent={() => <Box height={theme.spacing[3]} />}

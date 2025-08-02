@@ -1,18 +1,37 @@
 import React, {FC} from 'react';
-import { Box } from '../ui/layout/Box';
-import { Text } from '../ui/typography/Text';
+import {Box} from '../ui/layout/Box';
+import {Text} from '../ui/typography/Text';
+import ImageBanner from '../ui/media-icons/ImageBanner';
+import theme from '@/theme';
+import {getImage} from '@assets/constants/images';
+import HStack from '../ui/layout/HStack';
 
 type CommentCardProps = {
-  username: string;
+  userName: string;
   text: string;
+  photoURL: string;
 };
 
-export const CommentCard: FC<CommentCardProps> = ({username, text}) => {
+export const CommentCard: FC<CommentCardProps> = ({
+  userName,
+  text,
+  photoURL,
+}) => {
   return (
     <Box mt={3} bg="white" borderRadius="rounded-sm" p={4} g={3}>
-      <Text variant="b4bold" color="black">
-        {username || 'User'}
-      </Text>
+      <HStack g={3}>
+        <ImageBanner
+          source={photoURL || getImage('avatar')}
+          variant={photoURL ? 'remote' : 'local'}
+          width={20}
+          height={20}
+          borderRadius="rounded-full"
+          resizeMode="cover"
+        />
+        <Text variant="b4bold" color="black">
+          {userName || 'Annonymus'}
+        </Text>
+      </HStack>
       <Text color="black300" variant="b4regular">
         {text}
       </Text>
