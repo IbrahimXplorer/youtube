@@ -11,12 +11,15 @@ import {
   Screen,
   Text,
 } from '@/components';
-import { saveVideo } from '@/store/services/savedVideoSlices';
-import { AppDispatch, RootState } from '@/store/store';
+import {saveVideo} from '@/store/services/savedVideoSlices';
+import {AppDispatch, RootState} from '@/store/store';
 import theme from '@/theme';
-import { AuthenticatedStackNavigatorScreenProps } from '@/types/navigation';
-import { VideoItemType } from '@/types/youtube';
-import { getAuth } from '@react-native-firebase/auth';
+import {
+  AuthenticatedStackNavigatorScreenProps,
+  RootNavigatorScreenProps,
+} from '@/types/navigation';
+import {VideoItemType} from '@/types/youtube';
+import {getAuth} from '@react-native-firebase/auth';
 import {
   collection,
   deleteDoc,
@@ -27,14 +30,18 @@ import {
   serverTimestamp,
   setDoc,
 } from '@react-native-firebase/firestore';
-import { FlashList } from '@shopify/flash-list';
-import React, { FC, useCallback, useEffect, useRef, useState } from 'react';
+import {CompositeScreenProps} from '@react-navigation/native';
+import {FlashList} from '@shopify/flash-list';
+import React, {FC, useCallback, useEffect, useRef, useState} from 'react';
 import Toast from 'react-native-toast-message';
-import YoutubePlayer, { YoutubeIframeRef } from 'react-native-youtube-iframe';
-import { useDispatch, useSelector } from 'react-redux';
+import YoutubePlayer, {YoutubeIframeRef} from 'react-native-youtube-iframe';
+import {useDispatch, useSelector} from 'react-redux';
 
 interface SingleVideoScreenProps
-  extends AuthenticatedStackNavigatorScreenProps<'SingleVideo'> {}
+  extends CompositeScreenProps<
+    AuthenticatedStackNavigatorScreenProps<'SingleVideo'>,
+    RootNavigatorScreenProps<'UnAuthenticatedStack'>
+  > {}
 
 const SingleVideoScreen: FC<SingleVideoScreenProps> = ({route, navigation}) => {
   const {video} = route.params || {};
@@ -149,6 +156,15 @@ const SingleVideoScreen: FC<SingleVideoScreenProps> = ({route, navigation}) => {
 
   const handelSave = () => {
     dispatch(saveVideo(video));
+    navigation.navigate('UnAuthenticatedStack', {
+      screen: 'Root',
+      params: {
+        screen: 'VideoStack',
+        params: {
+          screen: 'Video',
+        },
+      },
+    });
   };
 
   const onStateChange = useCallback((state: string) => {

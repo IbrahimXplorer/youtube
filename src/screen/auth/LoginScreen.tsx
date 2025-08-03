@@ -6,6 +6,7 @@ import {
   Screen,
   Text,
 } from '@/components';
+import {AuthenticatedStackNavigatorScreenProps} from '@/types/navigation';
 import {
   createUserWithEmailAndPassword,
   getAuth,
@@ -19,7 +20,10 @@ import Toast from 'react-native-toast-message';
 
 const auth = getAuth();
 
-const LoginScreen: React.FC = () => {
+interface LoginScreenProps
+  extends AuthenticatedStackNavigatorScreenProps<'Login'> {}
+
+const LoginScreen: React.FC<LoginScreenProps> = ({navigation}) => {
   const [user, setUser] = useState<any>(null);
   const [initializing, setInitializing] = useState(true);
   const [email, setEmail] = useState('');
@@ -46,6 +50,7 @@ const LoginScreen: React.FC = () => {
     setLoading(true);
     try {
       await signInWithEmailAndPassword(auth, email, password);
+      navigation.goBack();
     } catch (error: any) {
       Toast.show({type: 'error', text1: 'Login Failed', text2: error?.message});
     } finally {
@@ -60,6 +65,7 @@ const LoginScreen: React.FC = () => {
     setLoading(true);
     try {
       await createUserWithEmailAndPassword(auth, email, password);
+      navigation.goBack();
     } catch (error: any) {
       Toast.show({type: 'error', text1: 'Registration failed'});
     } finally {

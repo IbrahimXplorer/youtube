@@ -2,23 +2,28 @@
 import {
   Box,
   Button,
+  Clickable,
   ContentSafeAreaView,
   IconButton,
   ImageBanner,
   Input,
   Screen,
   Text,
-  Clickable,
 } from '@/components';
 import theme from '@/theme';
-import {getImage} from '@assets/constants/images';
+import {
+  AccountStackScreenProps,
+  RootNavigatorScreenProps,
+} from '@/types/navigation';
+import { getImage } from '@assets/constants/images';
 import {
   getAuth,
   onAuthStateChanged,
   updateProfile,
 } from '@react-native-firebase/auth';
-import React, {useEffect, useState} from 'react';
-import {Asset, launchImageLibrary} from 'react-native-image-picker';
+import { type CompositeScreenProps } from '@react-navigation/native';
+import React, { FC, useEffect, useState } from 'react';
+import { Asset, launchImageLibrary } from 'react-native-image-picker';
 import Toast from 'react-native-toast-message';
 
 type UserProfile = {
@@ -33,7 +38,13 @@ const DEFAULT_USER: UserProfile = {
   photoURL: '',
 };
 
-const AccountScreen = () => {
+interface AccounScreenProps
+  extends CompositeScreenProps<
+    AccountStackScreenProps<'Account'>,
+    RootNavigatorScreenProps<'AuthenticatedStack'>
+  > {}
+
+const AccountScreen: FC<AccounScreenProps> = ({navigation}) => {
   const auth = getAuth();
   const [user, setUser] = useState<UserProfile>(DEFAULT_USER);
   const [loading, setLoading] = useState(false);
@@ -56,7 +67,7 @@ const AccountScreen = () => {
       setSelectedAsset(asset);
       setUser(prev => ({...prev, photoURL: asset.uri!}));
     } catch (error: any) {
-       Toast.show({
+      Toast.show({
         type: 'error',
         text1: error.message || 'Image selection failed',
       });
@@ -99,6 +110,22 @@ const AccountScreen = () => {
     });
     return unsubscribe;
   }, []);
+
+  if (!user?.email) {
+    return (
+      <Screen safeAreaEdges={['top']}>
+        <ContentSafeAreaView flex={1} justifyContent="center" g={5}>
+          <Text textAlign="center">Please Login your account</Text>
+          <Button
+            onPress={() =>
+              navigation.navigate('AuthenticatedStack', {screen: 'Login'})
+            }>
+            <Button.Text title="Login" />
+          </Button>
+        </ContentSafeAreaView>
+      </Screen>
+    );
+  }
 
   return (
     <Screen safeAreaEdges={['top']}>
