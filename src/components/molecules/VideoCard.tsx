@@ -1,20 +1,20 @@
+import React, { useCallback, useState } from 'react';
+import { StyleSheet } from 'react-native';
+import FastImage from 'react-native-fast-image';
 import {
   Box,
   Clickable,
   HStack,
   IconButton,
-  ImageBanner,
   Text,
 } from '@/components';
 import theme from '@/theme';
-import React from 'react';
-import {TouchableOpacityProps} from 'react-native';
 
 type VideoCardProps = {
   item: any;
   onDelete?: (id: string) => void;
   showDeleteIcon?: boolean;
-} & TouchableOpacityProps;
+} & React.ComponentProps<typeof Clickable>;
 
 export const VideoCard = ({
   item,
@@ -22,7 +22,22 @@ export const VideoCard = ({
   onPress,
   onDelete,
 }: VideoCardProps) => {
-  const {title, channelTitle, thumbnails} = item.snippet;
+  const { title, channelTitle, thumbnails } = item.snippet;
+
+  const [loadedImages, setLoadedImages] = useState({
+    medium: false,
+    maxres: false,
+  });
+
+  const handleLoad = useCallback((key: keyof typeof loadedImages) => {
+    setLoadedImages(prev => ({ ...prev, [key]: true }));
+  }, []);
+
+  const imageSources = [
+    { uri: thumbnails?.default?.url, key: 'default' },
+    { uri: thumbnails?.medium?.url, key: 'medium' },
+    { uri: thumbnails?.maxres?.url, key: 'maxres' },
+  ];
 
   return (
     <Clickable onPress={onPress}>
@@ -38,14 +53,34 @@ export const VideoCard = ({
           />
         </Box>
       )}
+
       <Box g={3}>
-        <ImageBanner
-          source={thumbnails.medium.url}
-          width={theme.sizes.width}
-          variant="remote"
-          height={theme.sizes.width / 2}
-          resizeMode="cover"
-        />
+        <Box style={styles.imageContainer}>
+          {imageSources.map(({ uri, key }) => {
+            const isVisible =
+              key === 'default' ||
+              (key === 'medium' && loadedImages.medium) ||
+              (key === 'maxres' && loadedImages.maxres);
+
+            return (
+              uri && (
+                <FastImage
+                  key={key}
+                  source={{ uri }}
+                  style={[
+                    styles.image,
+                    isVisible ? styles.visible : styles.hidden,
+                  ]}
+                  onLoad={() =>
+                    key !== 'default' && handleLoad(key as keyof typeof loadedImages)
+                  }
+                  resizeMode={FastImage.resizeMode.cover}
+                />
+              )
+            );
+          })}
+        </Box>
+
         <Box px={3} g={3}>
           <HStack justifyContent="space-between">
             <Box>
@@ -62,5 +97,24 @@ export const VideoCard = ({
     </Clickable>
   );
 };
+
+const styles = StyleSheet.create({
+  imageContainer: {
+    width: theme.sizes.width,
+    height: theme.sizes.width / 2,
+    position: 'relative',
+  },
+  image: {
+    ...StyleSheet.absoluteFillObject,
+    width: '100%',
+    height: '100%',
+  },
+  hidden: {
+    opacity: 0,
+  },
+  visible: {
+    opacity: 1,
+  },
+});
 
 export default VideoCard;

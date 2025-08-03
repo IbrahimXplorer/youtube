@@ -49,7 +49,7 @@ const SingleVideoScreen: FC<SingleVideoScreenProps> = ({route, navigation}) => {
     ? true
     : false;
 
-  const [playing, setPlaying] = useState(true);
+  const [play, setPlay] = useState(true);
   const [liked, setLiked] = useState(false);
   const [likeCount, setLikeCount] = useState(0);
   const [commentText, setCommentText] = useState('');
@@ -153,7 +153,7 @@ const SingleVideoScreen: FC<SingleVideoScreenProps> = ({route, navigation}) => {
 
   const onStateChange = useCallback((state: string) => {
     if (state === 'ended') {
-      setPlaying(false);
+      setPlay(false);
     }
   }, []);
 
@@ -180,7 +180,7 @@ const SingleVideoScreen: FC<SingleVideoScreenProps> = ({route, navigation}) => {
       <YoutubePlayer
         ref={playerRef}
         height={230}
-        play={playing}
+        play={play}
         videoId={videoId}
         onChangeState={onStateChange}
       />
