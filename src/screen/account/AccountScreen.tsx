@@ -10,7 +10,10 @@ import {
   Input,
   Screen,
   Text,
+  VStack,
 } from '@/components';
+import {clearAllVideos} from '@/store/services/savedVideoSlices';
+import {AppDispatch} from '@/store/store';
 import theme from '@/theme';
 import {
   AccountStackScreenProps,
@@ -21,11 +24,13 @@ import {
   getAuth,
   onAuthStateChanged,
   updateProfile,
+  signOut,
 } from '@react-native-firebase/auth';
 import {type CompositeScreenProps} from '@react-navigation/native';
 import React, {FC, useEffect, useState} from 'react';
 import {Asset, launchImageLibrary} from 'react-native-image-picker';
 import Toast from 'react-native-toast-message';
+import {useDispatch} from 'react-redux';
 
 type UserProfile = {
   displayName: string;
@@ -51,6 +56,7 @@ const AccountScreen: FC<AccounScreenProps> = ({navigation}) => {
   const [loading, setLoading] = useState(false);
   const [selectedAsset, setSelectedAsset] = useState<Asset | null>(null);
   const [isEditing, setIsEditing] = useState(false);
+  const dispatch = useDispatch<AppDispatch>();
 
   //handlers
   const handlePickImage = async () => {
@@ -96,6 +102,17 @@ const AccountScreen: FC<AccounScreenProps> = ({navigation}) => {
       });
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleLogout = async () => {
+    try {
+      await signOut(auth);
+      dispatch(clearAllVideos());
+      navigation.navigate('AuthenticatedStack', {screen: 'Login'});
+    } catch (error: any) {
+      console.log(error);
+      Toast.show({type: 'error', text1: error?.message || 'Failed to log out'});
     }
   };
 
@@ -193,28 +210,34 @@ const AccountScreen: FC<AccounScreenProps> = ({navigation}) => {
           {user.email || 'No email associated'}
         </Text>
 
-        <Button
-          size="sm"
-          loading={loading}
-          onPress={handleUpdateProfile}
-          disabled={loading}>
-          <Button.Text title="Update Profile" />
-        </Button>
-        <Button
-          size="sm"
-          onPress={() =>
-            navigation.navigate('UnAuthenticatedStack', {
-              screen: 'Root',
-              params: {
-                screen: 'VideoStack',
+        <VStack g={5}>
+          <Button
+            size="sm"
+            loading={loading}
+            onPress={handleUpdateProfile}
+            disabled={loading}>
+            <Button.Text title="Update Profile" />
+          </Button>
+          <Button
+            size="sm"
+            variant="secondary"
+            onPress={() =>
+              navigation.navigate('UnAuthenticatedStack', {
+                screen: 'Root',
                 params: {
-                  screen: 'Video',
+                  screen: 'VideoStack',
+                  params: {
+                    screen: 'Video',
+                  },
                 },
-              },
-            })
-          }>
-          <Button.Text title="Saved videos" />
-        </Button>
+              })
+            }>
+            <Button.Text title="Saved videos" />
+          </Button>
+          <Button size="sm" variant="danger" onPress={handleLogout}>
+            <Button.Text title="Log Out" />
+          </Button>
+        </VStack>
       </ContentSafeAreaView>
     </Screen>
   );

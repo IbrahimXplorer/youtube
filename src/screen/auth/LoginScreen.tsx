@@ -52,7 +52,12 @@ const LoginScreen: React.FC<LoginScreenProps> = ({navigation}) => {
       await signInWithEmailAndPassword(auth, email, password);
       navigation.goBack();
     } catch (error: any) {
-      Toast.show({type: 'error', text1: 'Login Failed', text2: error?.message});
+      console.log(error);
+      Toast.show({
+        type: 'error',
+        text1: 'Login Failed',
+        text2: error?.message,
+      });
     } finally {
       setLoading(false);
     }
@@ -67,35 +72,19 @@ const LoginScreen: React.FC<LoginScreenProps> = ({navigation}) => {
       await createUserWithEmailAndPassword(auth, email, password);
       navigation.goBack();
     } catch (error: any) {
-      Toast.show({type: 'error', text1: 'Registration failed'});
+      Toast.show({
+        type: 'error',
+        text1: 'Registration failed',
+        text2: error?.message,
+      });
     } finally {
       setLoading(false);
-    }
-  };
-
-  const handleLogout = async () => {
-    try {
-      await signOut(auth);
-    } catch (error: any) {
-      Toast.show({type: 'error', text1: 'Failed to login'});
     }
   };
 
   if (initializing) {
     return <Animation animation="loader" />;
   }
-
-  if (user) {
-    return (
-      <Screen safeAreaEdges={['top']}>
-        <Text>Welcome, {user.email}</Text>
-        <Button onPress={handleLogout}>
-          <Button.Text title="Logout" />
-        </Button>
-      </Screen>
-    );
-  }
-
   return (
     <Screen safeAreaEdges={['top']}>
       <ContentSafeAreaView g={5} mt={5}>

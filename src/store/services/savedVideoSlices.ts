@@ -26,8 +26,12 @@ const savedVideosSlice = createSlice({
         video => video.id !== action.payload,
       );
     },
+    clearAllVideos: state => {
+      state.savedVideos = [];
+    },
   },
 });
 
-export const {saveVideo, removeVideo} = savedVideosSlice.actions;
+export const {saveVideo, removeVideo, clearAllVideos} =
+  savedVideosSlice.actions;
 export default savedVideosSlice.reducer;
