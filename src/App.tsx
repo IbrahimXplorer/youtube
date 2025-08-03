@@ -8,6 +8,7 @@ import Navigator from './navigators';
 import {Provider} from 'react-redux';
 import {persistor, store} from './store/store';
 import {PersistGate} from 'redux-persist/integration/react';
+import Toast from 'react-native-toast-message';
 
 export type RootNavigatorParamList = {
   Home: undefined;
@@ -22,6 +23,7 @@ const App = (_props: AppProps): ReactElement => {
         <ThemeProvider theme={theme}>
           <SafeAreaProvider>
             <Navigator />
+              <Toast />
           </SafeAreaProvider>
         </ThemeProvider>
       </PersistGate>

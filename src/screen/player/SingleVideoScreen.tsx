@@ -11,12 +11,12 @@ import {
   Screen,
   Text,
 } from '@/components';
-import {saveVideo} from '@/store/services/savedVideoSlices';
-import {AppDispatch, RootState} from '@/store/store';
+import { saveVideo } from '@/store/services/savedVideoSlices';
+import { AppDispatch, RootState } from '@/store/store';
 import theme from '@/theme';
-import {AuthenticatedStackNavigatorScreenProps} from '@/types/navigation';
-import {VideoItemType} from '@/types/youtube';
-import {getAuth} from '@react-native-firebase/auth';
+import { AuthenticatedStackNavigatorScreenProps } from '@/types/navigation';
+import { VideoItemType } from '@/types/youtube';
+import { getAuth } from '@react-native-firebase/auth';
 import {
   collection,
   deleteDoc,
@@ -27,11 +27,11 @@ import {
   serverTimestamp,
   setDoc,
 } from '@react-native-firebase/firestore';
-import {FlashList} from '@shopify/flash-list';
-import React, {FC, useCallback, useEffect, useRef, useState} from 'react';
-import {Alert} from 'react-native';
-import YoutubePlayer, {YoutubeIframeRef} from 'react-native-youtube-iframe';
-import {useDispatch, useSelector} from 'react-redux';
+import { FlashList } from '@shopify/flash-list';
+import React, { FC, useCallback, useEffect, useRef, useState } from 'react';
+import Toast from 'react-native-toast-message';
+import YoutubePlayer, { YoutubeIframeRef } from 'react-native-youtube-iframe';
+import { useDispatch, useSelector } from 'react-redux';
 
 interface SingleVideoScreenProps
   extends AuthenticatedStackNavigatorScreenProps<'SingleVideo'> {}
@@ -115,7 +115,7 @@ const SingleVideoScreen: FC<SingleVideoScreenProps> = ({route, navigation}) => {
         setLikeCount(prev => prev + 1);
       }
     } catch {
-      Alert.alert('Error', 'Something went wrong');
+      Toast.show({type: 'error', text1: 'Failed to like this video'});
     }
   };
 
@@ -143,7 +143,7 @@ const SingleVideoScreen: FC<SingleVideoScreenProps> = ({route, navigation}) => {
       setCommentText('');
       fetchComments();
     } catch {
-      Alert.alert('Error', 'Failed to post comment');
+      Toast.show({type: 'error', text1: 'Failed to comment'});
     }
   };
 
@@ -154,7 +154,6 @@ const SingleVideoScreen: FC<SingleVideoScreenProps> = ({route, navigation}) => {
   const onStateChange = useCallback((state: string) => {
     if (state === 'ended') {
       setPlaying(false);
-      Alert.alert('Video has finished playing!');
     }
   }, []);
 

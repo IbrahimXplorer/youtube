@@ -14,7 +14,8 @@ import {
   signOut,
 } from '@react-native-firebase/auth';
 import React, {useEffect, useState} from 'react';
-import {ActivityIndicator, Alert} from 'react-native';
+import {ActivityIndicator} from 'react-native';
+import Toast from 'react-native-toast-message';
 
 const auth = getAuth();
 
@@ -40,13 +41,13 @@ const LoginScreen: React.FC = () => {
 
   const handleLogin = async () => {
     if (!email || !password) {
-      return Alert.alert('Error', 'Enter email and password');
+      return Toast.show({type: 'error', text1: 'Enter email and password'});
     }
     setLoading(true);
     try {
       await signInWithEmailAndPassword(auth, email, password);
     } catch (error: any) {
-      Alert.alert('Login Failed', error.message);
+      Toast.show({type: 'error', text1: 'Login Failed', text2: error?.message});
     } finally {
       setLoading(false);
     }
@@ -54,13 +55,13 @@ const LoginScreen: React.FC = () => {
 
   const handleRegister = async () => {
     if (!email || !password) {
-      return Alert.alert('Error', 'Enter email and password');
+      return Toast.show({type: 'error', text1: 'Enter email and password'});
     }
     setLoading(true);
     try {
       await createUserWithEmailAndPassword(auth, email, password);
     } catch (error: any) {
-      Alert.alert('Registration Failed', error.message);
+      Toast.show({type: 'error', text1: 'Registration failed'});
     } finally {
       setLoading(false);
     }
@@ -70,7 +71,7 @@ const LoginScreen: React.FC = () => {
     try {
       await signOut(auth);
     } catch (error: any) {
-      Alert.alert('Logout Error', error.message);
+      Toast.show({type: 'error', text1: 'Failed to login'});
     }
   };
 

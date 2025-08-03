@@ -18,8 +18,8 @@ import {
   updateProfile,
 } from '@react-native-firebase/auth';
 import React, {useEffect, useState} from 'react';
-import {Alert} from 'react-native';
 import {Asset, launchImageLibrary} from 'react-native-image-picker';
+import Toast from 'react-native-toast-message';
 
 type UserProfile = {
   displayName: string;
@@ -40,19 +40,7 @@ const AccountScreen = () => {
   const [selectedAsset, setSelectedAsset] = useState<Asset | null>(null);
   const [isEditing, setIsEditing] = useState(false);
 
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, currentUser => {
-      if (currentUser) {
-        setUser({
-          displayName: currentUser.displayName || '',
-          email: currentUser.email || '',
-          photoURL: currentUser.photoURL || '',
-        });
-      }
-    });
-    return unsubscribe;
-  }, []);
-
+  //handlers
   const handlePickImage = async () => {
     try {
       const result = await launchImageLibrary({
@@ -68,8 +56,10 @@ const AccountScreen = () => {
       setSelectedAsset(asset);
       setUser(prev => ({...prev, photoURL: asset.uri!}));
     } catch (error: any) {
-      console.error('Image selection failed:', error);
-      Alert.alert('Error', error.message || 'Image selection failed.');
+       Toast.show({
+        type: 'error',
+        text1: error.message || 'Image selection failed',
+      });
     }
   };
 
@@ -86,14 +76,29 @@ const AccountScreen = () => {
       });
       setSelectedAsset(null);
       setIsEditing(false);
-      Alert.alert('Success', 'Profile updated.');
+      Toast.show({type: 'success', text1: 'Profile updated'});
     } catch (error: any) {
-      console.error('Update failed:', error);
-      Alert.alert('Error', error.message || 'Failed to update profile.');
+      Toast.show({
+        type: 'error',
+        text1: error.message || 'Failed to update profile.',
+      });
     } finally {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, currentUser => {
+      if (currentUser) {
+        setUser({
+          displayName: currentUser.displayName || '',
+          email: currentUser.email || '',
+          photoURL: currentUser.photoURL || '',
+        });
+      }
+    });
+    return unsubscribe;
+  }, []);
 
   return (
     <Screen safeAreaEdges={['top']}>

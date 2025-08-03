@@ -1,5 +1,12 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import {Box, EmtpyListCard, Screen, Text, VideoCard} from '@/components';
+import {
+  Animation,
+  Box,
+  EmtpyListCard,
+  Screen,
+  Text,
+  VideoCard,
+} from '@/components';
 import {useGetVideosQuery} from '@/store/services/apiSlice';
 import theme from '@/theme';
 import {RootNavigatorScreenProps} from '@/types/navigation';
@@ -72,28 +79,41 @@ const HomeScreen: FC<HomeScreenProps> = ({navigation}) => {
     );
   };
 
+  if (error) {
+    return (
+      <Screen safeAreaEdges={['top']}>
+        <Text textAlign="center">Error fetching videos</Text>
+      </Screen>
+    );
+  }
+
+  if (isLoading) {
+    return (
+      <Screen safeAreaEdges={['top']}>
+        <Box flex={1} alignItems="center" justifyContent="center">
+          <ActivityIndicator size="large" />
+        </Box>
+      </Screen>
+    );
+  }
+
   return (
     <Screen preset="fixed" safeAreaEdges={['top']}>
-      {isLoading && <Text>Loading...</Text>}
-      {error && <Text>Error fetching videos</Text>}
-
-      {!isLoading && !error && (
-        <FlashList
-          data={videos}
-          ListEmptyComponent={<EmtpyListCard />}
-          keyExtractor={item => item?.id?.toString()}
-          estimatedItemSize={100}
-          renderItem={({item}) => (
-            <VideoCard item={item} onPress={() => handleVideoPress(item)} />
-          )}
-          ItemSeparatorComponent={() => <Box height={theme.spacing[5]} />}
-          onEndReached={handleEndReached}
-          onEndReachedThreshold={0.5}
-          refreshing={isRefreshing}
-          onRefresh={handleRefresh}
-          // ListFooterComponent={renderFooter}
-        />
-      )}
+      <FlashList
+        data={videos}
+        ListEmptyComponent={<EmtpyListCard />}
+        keyExtractor={item => item?.id?.toString()}
+        estimatedItemSize={100}
+        renderItem={({item}) => (
+          <VideoCard item={item} onPress={() => handleVideoPress(item)} />
+        )}
+        ItemSeparatorComponent={() => <Box height={theme.spacing[5]} />}
+        onEndReached={handleEndReached}
+        onEndReachedThreshold={0.5}
+        refreshing={isRefreshing}
+        onRefresh={handleRefresh}
+        ListFooterComponent={renderFooter}
+      />
     </Screen>
   );
 };
