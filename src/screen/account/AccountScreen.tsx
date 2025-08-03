@@ -4,6 +4,7 @@ import {
   Button,
   Clickable,
   ContentSafeAreaView,
+  HStack,
   IconButton,
   ImageBanner,
   Input,
@@ -15,15 +16,15 @@ import {
   AccountStackScreenProps,
   RootNavigatorScreenProps,
 } from '@/types/navigation';
-import { getImage } from '@assets/constants/images';
+import {getImage} from '@assets/constants/images';
 import {
   getAuth,
   onAuthStateChanged,
   updateProfile,
 } from '@react-native-firebase/auth';
-import { type CompositeScreenProps } from '@react-navigation/native';
-import React, { FC, useEffect, useState } from 'react';
-import { Asset, launchImageLibrary } from 'react-native-image-picker';
+import {type CompositeScreenProps} from '@react-navigation/native';
+import React, {FC, useEffect, useState} from 'react';
+import {Asset, launchImageLibrary} from 'react-native-image-picker';
 import Toast from 'react-native-toast-message';
 
 type UserProfile = {
@@ -198,6 +199,21 @@ const AccountScreen: FC<AccounScreenProps> = ({navigation}) => {
           onPress={handleUpdateProfile}
           disabled={loading}>
           <Button.Text title="Update Profile" />
+        </Button>
+        <Button
+          size="sm"
+          onPress={() =>
+            navigation.navigate('UnAuthenticatedStack', {
+              screen: 'Root',
+              params: {
+                screen: 'VideoStack',
+                params: {
+                  screen: 'Video',
+                },
+              },
+            })
+          }>
+          <Button.Text title="Saved videos" />
         </Button>
       </ContentSafeAreaView>
     </Screen>
