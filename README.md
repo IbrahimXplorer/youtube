@@ -1,109 +1,112 @@
 
-# ✨ Shadow-UI => React Native UI Library
+# 🎬 YouTube Video App - React Native Skill Assessment
 
-A sleek, customizable, and production-ready **React Native UI Component Library** designed to accelerate app development with beautifully crafted components out of the box. Built with **[Shopify Restyle](https://github.com/Shopify/restyle)** for a flexible and consistent design system, this library helps you build modern, accessible, and themeable interfaces with ease. Inspired by the simplicity of React Native Paper, it empowers you to create consistent, visually appealing UIs across Android and iOS platforms.
-
----
-
-## 📦 Prerequisites
-
-Before getting started, make sure your development environment meets the following requirements:
-
-- ✅ Latest version of **[Node.js](https://nodejs.org)**
-- 💻 A machine running **Windows**, **macOS**, or **Linux**
-- ⚙️ React Native CLI properly installed and configured
-
-> **Note**: Please complete the official [React Native Environment Setup](https://reactnative.dev/docs/environment-setup) — up to the **“Creating a new application”** step — before proceeding.
+An interactive YouTube-integrated mobile application built using **React Native CLI** with **TypeScript**, featuring user authentication, video interactions, profile management, and a saved videos experience — all designed using a custom **Atomic Design System** and optimized for performance.
 
 ---
 
-## 🚀 Getting Started
+## 📱 Demo & Downloads
 
-Follow the steps below to launch your React Native project using this UI component library.
+- 📦 **APK Download**: [Download the Latest APK](https://drive.google.com/file/d/1zXR1qx5YIF13INYXDzaC9bxVV3pqcvWl/view?usp=sharing)
+- 💻 **GitHub Repository**: [GitHub Repo](https://github.com/IbrahimXplorer/youtube)
 
-### Step 1: Start the Metro Bundler
+---
 
-Metro is the JavaScript bundler that runs with React Native. To start it, run the following command from the root of your project:
+## 🚀 Features
+
+###  YouTube API Integration
+- Fetch and display a scrollable list of YouTube videos.
+- Watch videos directly inside the app with a custom player using `react-native-youtube-iframe`.
+
+### 🔐 Authentication
+- Firebase Email & Password Authentication.
+- Restricted access to liking, commenting, and saving videos without logging in.
+
+###  User Interactions
+- **Like** videos: Stored in Firebase Firestore.
+- **Comment** on videos: Stored and fetched per user.
+- **Save** videos: Persisted using Redux Toolkit + `redux-persist` with MMKV for performance.
+
+###  Saved Videos Page
+- View all saved videos with thumbnails.
+- Replay videos or remove them from the list.
+- Fully synced with Redux-persisted local state.
+
+###  Profile Management
+- View and update profile information: Name & Profile Photo.
+- Upload image using `react-native-image-picker`.
+- Navigate to saved videos directly from Profile.
+
+---
+
+## 🧠 Tech Stack & Tools
+
+| Feature                    | Library/Tool                             |
+|---------------------------|------------------------------------------|
+| Framework                 | React Native CLI                         |
+| Language                  | TypeScript                               |
+| State Management          | Redux Toolkit, Redux Persist (MMKV)      |
+| UI Architecture           | Custom Atomic Design System              |
+| Image Optimization        | `react-native-fast-image`                |
+| List Performance          | `@shopify/flash-list`                    |
+| Authentication            | Firebase Auth (Email/Password)           |
+| Backend / DB              | Firebase Firestore                       |
+| Video Playback            | `react-native-youtube-iframe`            |
+| Form Handling             | Custom-controlled inputs (atomic design) |
+| Storage                   | MMKV + AsyncStorage (fallback)           |
+
+---
+
+##  Screens
+
+- **Home Screen**: Browse YouTube videos.
+- **Video Details**: Watch, like, comment, and save.
+- **Saved Videos Page**: Manage your saved content.
+- **Profile Screen**: Update name and photo.
+- **Authentication Screens**: Email/password login and registration.
+
+---
+
+# 🛠️ Setup Instructions
 
 ```bash
-yarn start
+# 1. Clone the repository
+git clone https://github.com/your-username/youtube-video-app.git
+cd youtube-video-app
+
+# 2. Install dependencies
+yarn install
+
+# 3. Install pod
+yarn pod
+
+# 4. Start the Metro bundler
+npx react-native start
+
+# 5. Run on Android
+npx react-native run-android
+
+# 6. Run on iOS
+npx react-native run-ios
 ```
 
-Keep Metro running in its own terminal.
+---
+
+## ✅ Testing Checklist
+
+- [x] YouTube videos load and play correctly
+- [x] Firebase login & registration functional
+- [x] Likes & comments stored and displayed per video
+- [x] Videos saved and persisted across sessions
+- [x] Profile photo upload and update
+- [x] Navigation to Saved Videos from Profile
 
 ---
 
-### Step 2: Launch Your App
+## 💡 Highlights & Thought Process
 
-In a **new terminal**, from your project root, run the appropriate command based on your platform:
-
-#### ▶️ Android
-
-```bash
-yarn android
-```
-
-#### 🍎 iOS
-
-```bash
-yarn ios
-```
-
-Once the build completes, you should see your app running in the emulator or simulator — with components styled and powered by this library.
-
-> 💡 You can also run your app directly via Android Studio or Xcode if you prefer.
-
----
-
-## 🧩 Available Components
-
-This UI library includes a growing collection of reusable and themeable components such as:
-
-- Buttons (with variants and icons)
-- Cards
-- Modals
-- Inputs
-- Avatars
-- Badges
-- ...and more
-
-> 📚 Full documentation coming soon!
-
----
-
-## 🤝 Contributing
-
-We welcome contributions from the community! To contribute:
-
-1. Clone the repository.
-2. Create a new feature branch:  
-   ```bash
-   git checkout -b <your-feature-branch>
-   ```
-3. Make your changes and commit:  
-   ```bash
-   git commit -m "Add new component: CustomButton"
-   ```
-4. Push your changes:  
-   ```bash
-   git push
-   ```
-5. Open a Pull Request.
-
-Let’s grow this library together 🚀
-
----
-
-## 👥 Contributors
-
-A special thanks to the following contributors:
-
-- [@IbrahiimKhan](https://github.com/IbrahiimKhan) 🛠️
-
----
-
-## 📬 Contact
-
-For questions, feedback, or collaboration inquiries:
-
-📧 **Email**: [khan.ask.ibrahim@gmail.com](mailto:khan.ask.ibrahim@gmail.com)
+- Applied **Atomic Design Pattern** for reusable components and scalable UI architecture.
+- Optimized list performance using **FlashList** and **FastImage** for better UX.
+- Leveraged **Redux Toolkit** with **MMKV** to persist saved videos offline.
+- Implemented full **TypeScript** type safety for reliability and clarity.
+- Designed responsive and accessible UI using custom layout components.
